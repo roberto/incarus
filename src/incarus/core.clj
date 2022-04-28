@@ -1,6 +1,7 @@
-(ns incarus.core)
+(ns incarus.core
+  (:require [clojure.java.io :as io]
+            [taoensso.carmine :as car]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn incrby+limit [key increment limit]
+  (car/lua (-> "lua/incrby+limit.lua" io/resource slurp)
+           {:k key} {:n increment :o limit}))
