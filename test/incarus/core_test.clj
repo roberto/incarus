@@ -31,8 +31,16 @@
 
 (deftest incrby+limit-test
   (testing "should increment the value"
-    (is (= 90 (wcar* (incarus/incrby+limit "key" 90 100)))))
-  (testing "should set the value with the limit itself when the increment surpass the limit"
-    (is (= 100 (wcar* (incarus/incrby+limit "key" 20 100)))))
+    (is (= 9 (wcar* (incarus/incrby+limit "key" 9 10)))))
+  (testing "should set the value with the limit itself when the increment exceeds the limit"
+    (is (= 10 (wcar* (incarus/incrby+limit "key" 2 10)))))
   (testing "should not increment when the current value is the limit"
-    (is (= 100 (wcar* (incarus/incrby+limit "key" 10 100))))))
+    (is (= 10 (wcar* (incarus/incrby+limit "key" 1 10))))))
+
+(deftest decrby+limit-test
+  (testing "should decrement the value"
+    (is (= -9 (wcar* (incarus/decrby+limit "key" 9 -10)))))
+  (testing "should set the value with the limit itself when the decrement exceeds the limit"
+    (is (= -10 (wcar* (incarus/decrby+limit "key" 2 -10)))))
+  (testing "should not decrement when the current value is the limit"
+    (is (= -10 (wcar* (incarus/decrby+limit "key" 1 -10))))))
